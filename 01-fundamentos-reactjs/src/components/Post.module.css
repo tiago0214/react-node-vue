@@ -89,7 +89,7 @@
 }
 
 /* diferença desse focus:withing para o outro que esse olha qualquer elemento exe: textarea, input, button que esta com focus
-e alica uma estilização no elemento que eu escolher: no caso o footer*/
+e aplica uma estilização no elemento que eu escolher: no caso o footer*/
 .commentForm:focus-within footer{
   visibility: visible;
   max-height: none;
@@ -107,9 +107,16 @@ e alica uma estilização no elemento que eu escolher: no caso o footer*/
   transition: background-color 1s;
 }
 
-.commentForm button[type=submit]:hover{
+.commentForm button[type=submit]:disabled{
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.commentForm button[type=submit]:not(:disabled):hover{
   background-color: var(--green-300);
 }
+
+.commentForm button[type=submit]
 
 .commentList {
   margin-top: 2rem;

@@ -9,7 +9,6 @@ import { useState } from 'react';
 
 
 export function Post ({ author, publishedAt, content }){
-
   const [ comments, setComments ] = useState([
     "Post muito bacana hein!"
   ])
@@ -26,6 +25,8 @@ export function Post ({ author, publishedAt, content }){
  })
 
   function handleNewCommentChange (){
+    event.target.setCustomValidity('');
+
     setNewCommentText(event.target.value);
     //se atentar, que ele vai ficar pegando todo o texto que estiver no text area. 
     //não somente o que eu apertar, eu usei {onChange}, ele é acionado para pegar todo o valor do text area.
@@ -38,6 +39,20 @@ export function Post ({ author, publishedAt, content }){
 
     setNewCommentText('');
   }
+
+  function deleteComment (commentToDelet){
+    const commentsWithoutDeletedOne = comments.filter((comment) => {
+      return comment !== commentToDelet;
+    });
+
+    setComments(commentsWithoutDeletedOne);
+  }
+
+  function handleInvalidComment (){
+    event.target.setCustomValidity('Este campo é obrigatório!');
+  }
+
+  const isNewCommentEmpty = newCommentText.length === 0;
 
   return (
     <article className={styles.post}>
@@ -72,19 +87,21 @@ export function Post ({ author, publishedAt, content }){
         <strong>Deixe seu feedback!</strong>
 
         <textarea 
-          name="comment"
-          value={newCommentText}
-          placeholder="Deixe um comentário!"
-          onChange={handleNewCommentChange} 
+          name= "comment"
+          value= {newCommentText}
+          placeholder= "Deixe um comentário!"
+          onChange= {handleNewCommentChange}
+          onInvalid= {handleInvalidComment}
+          required = {true}
         />
 
         <footer>
-          <button type="submit">Publicar</button>
+          <button type="submit" disabled={ isNewCommentEmpty } >Publicar</button>
         </footer>
       </form>
 
       <div className={styles.commentList}>
-        {comments.map( comment => <Comment key={comment} content={comment}/>)}
+        {comments.map( comment => <Comment key={comment} content={comment} onDeleteComment={deleteComment} />)}
       </div>
 
     </article>
