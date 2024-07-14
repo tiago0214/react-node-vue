@@ -4,19 +4,66 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';//integração entre o ZOD e o react hook form// react hook form
  //não tem nenhuma validação mas, ele faz a integracão com as bibliotecas que faz as validações.
 import * as zod from 'zod';
+import { useState } from "react";
 //preciso usar essa sintaxa: quando a minha biblioteca não tem o import default
 
 const newCycleFormValidationSchema = zod.object({
-  
+  task: zod.string().min(1, "Informe a tarefa"),
+  duration: zod.number().min(5).max(60)
 })
+//eu preciso criar dessa maneira, porque o meu zodResolver(), usa a validação como schemaBased, ou seja, eu preciso 
+//representar corretamente a informação que ele vai validar. e os meus dados do useForm, são tratados como um objeto
+//é so reparar do console.log() => dentro do handleSubmit -> ele passa os dados como objeto.
+
+// interface NewCycleFormData {
+//   task: string,
+//   duration: number
+// }
+
+type NewCycleFormData = zod.infer<typeof newCycleFormValidationSchema>;
+
+interface Cycle {
+  id: string
+  task: string
+  duration: number
+}
 
 export function Home(){
-  const { register, handleSubmit, watch } = useForm({
-    resolver: zodResolver()
+  const [cycles, setCycles] = useState<Cycle[]>([]);
+  const [ activeCycleId, setActiveCycledId ] = useState<string | null>( null );
+  const [amountSecondsPassed, setAmountSecondsPassed ] = useState(0);
+
+  const { register, handleSubmit, watch, reset } = useForm<NewCycleFormData>({
+    resolver: zodResolver(newCycleFormValidationSchema), //resolver: faz  integração entre o ZOD e o react hook form
+    defaultValues: {
+      task: '',
+      duration: 0
+    }
   });
 
-  function handleCreateNewCycle (data:any){
-    console.log(data);
+  const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId);
+
+  const totalSeconds = activeCycle ? activeCycle.duration * 60 : 0;
+  const currentSeconds = activeCycle ? totalSeconds - amountSecondsPassed : 0 ;
+  
+  const minutosAmount = Math.floor(currentSeconds / 60);
+
+
+  function handleCreateNewCycle (data:NewCycleFormData){
+    const id = String(new Date().getTime());
+
+    const newCycle:Cycle = {
+      id,
+      task: data.task,
+      duration: data.duration
+    }
+
+    setCycles(state => [...state, newCycle]);//closure: toda vez que eu estou alterando um estado, e esse estado depende
+    //da sua versão anterior, recomendavel eu utilizar o conceito de closure. alterar como uma função.
+    //state => é o valor atual do meu estado.
+    setActiveCycledId(id);
+
+    reset();
   }
 
   const task = watch("task");
