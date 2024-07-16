@@ -46,7 +46,11 @@ export function Home(){
   const totalSeconds = activeCycle ? activeCycle.duration * 60 : 0;
   const currentSeconds = activeCycle ? totalSeconds - amountSecondsPassed : 0 ;
   
-  const minutosAmount = Math.floor(currentSeconds / 60);
+  const minutesAmount = Math.floor(currentSeconds / 60);
+  const secondsAmout = currentSeconds % 60; 
+
+  const minutes = String(minutesAmount).padStart(2,"0");
+  const seconds = String(secondsAmout).padStart(2,"0")
 
 
   function handleCreateNewCycle (data:NewCycleFormData){
@@ -103,11 +107,11 @@ export function Home(){
         </FormContainer>
 
         <CountContainer>
-          <span>0</span>
-          <span>0</span>
+          <span>${minutes[0]}</span>
+          <span>${minutes[1]}</span>
           <Separator>:</Separator>
-          <span>0</span>
-          <span>0</span>
+          <span>${seconds[0]}</span>
+          <span>${seconds[1]}</span>
         </CountContainer>
 
         <StartCountdownButton type="submit" disabled={isSubmitDisable} >
