@@ -1,6 +1,8 @@
 import { useContext } from "react";
 import { HistoryContainer, HistoryList, Status } from "./styles";
 import { CyclesContext } from "../../contexts/CyclesContexts";
+import { formatDistanceToNow } from 'date-fns'
+import { ptBR } from "date-fns/locale/pt-BR";
 
 export function History(){
   const { cycles } = useContext(CyclesContext);
@@ -25,7 +27,10 @@ export function History(){
                 <tr>
                   <td>{cycle.task}</td>
                   <td>{cycle.duration}</td>
-                  <td>{cycle.startedDate.toISOString()}</td>
+                  <td>{formatDistanceToNow(cycle.startedDate,{
+                    addSuffix: true,
+                    locale: ptBR,
+                  })}</td>
                   <td>
                     {cycle.finishedDate && <Status statusColor="green">Concluido</Status>}
                     {/* Se atentar, que a condição acima é um if => somente executa a segunda opção se a primeira === true */}

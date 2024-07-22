@@ -1,18 +1,12 @@
-import { createContext, ReactNode, useState } from "react"
+import { createContext, ReactNode, useReducer, useState } from "react"
+import { ActionTypes, Cycle, cyclesReducer } from "../reducers/cycles"
 
 interface CreateCycleData {
   task: string
   duration: number
 }
 
-interface Cycle {
-  id: string
-  task: string
-  duration: number
-  startedDate: Date
-  interruptDate?: Date
-  finishedDate?: Date
-}
+
 
 interface CyclesContextType {
   cycles: Cycle[]
@@ -31,10 +25,17 @@ interface CyclesContextProviderProps{
   children: ReactNode
 }
 
+
+
 export function CyclesContextProvider({ children }:CyclesContextProviderProps){
-  const [cycles, setCycles] = useState<Cycle[]>([]);
-  const [activeCycleId, setActiveCycledId ] = useState<string | null>( null );
-  const [amountSecondsPassed, setAmountSecondsPassed ] = useState(0);
+  const [ cyclesState, dispach ] = useReducer(cyclesReducer, {
+    cycles: [],
+    activeCycleId : null
+  })
+
+  const [ amountSecondsPassed, setAmountSecondsPassed ] = useState(0);
+
+  const { activeCycleId, cycles } = cyclesState;
 
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId);
 
@@ -43,26 +44,21 @@ export function CyclesContextProvider({ children }:CyclesContextProviderProps){
   }
 
   function markCurrentCycleAsFineshed(){
-    setCycles((state) =>  state.map((cycle) => {
-      if(cycle.id === activeCycleId ){
-        return { ...cycle, finishedDate: new Date()}
-      }else{
-        return cycle
+    dispach({
+      type: ActionTypes.MARK_CURRENT_CYCLE_AS_FINISHED,
+      payload: {
+        activeCycleId
       }
-    }))
+    });
   }
 
   function interruptCurrentCycle (){
-    setCycles( state => 
-      state.map((cycle) => {
-      if (cycle.id === activeCycleId) {
-        return { ...cycle, interruptDate: new Date() }
-      } else {
-        return cycle
+    dispach({
+      type: ActionTypes.INTERRUPT_ACTIVE_CYCLE,
+      payload: {
+        activeCycleId
       }
-      })
-    );
-    setActiveCycledId(null);
+    });
   }
 
   function createNewCycle (data:CreateCycleData){
@@ -74,10 +70,16 @@ export function CyclesContextProvider({ children }:CyclesContextProviderProps){
       duration: data.duration,
       startedDate: new Date()
     }
-    setCycles(state => [...state, newCycle]);//closure: toda vez que eu estou alterando um estado, e esse estado depende
+    dispach({
+      type: ActionTypes.CREATE_NEW_CYCLE,
+      payload: {
+        newCycle,
+      }
+    });
+
+    //setCycles(state => [...state, newCycle]);//closure: toda vez que eu estou alterando um estado, e esse estado depende
     //da sua versão anterior, recomendavel eu utilizar o conceito de closure. alterar como uma função.
     //state => é o valor atual do meu estado.
-    setActiveCycledId(id);
     setAmountSecondsPassed(0);
     // reset();
   }
