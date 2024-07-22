@@ -1,6 +1,10 @@
+import { useContext } from "react";
 import { HistoryContainer, HistoryList, Status } from "./styles";
+import { CyclesContext } from "../../contexts/CyclesContexts";
 
 export function History(){
+  const { cycles } = useContext(CyclesContext);
+
   return(
     <HistoryContainer >
       <h1>Meu histórico</h1>
@@ -16,46 +20,21 @@ export function History(){
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Tarefa</td>
-              <td>20 min</td>
-              <td>Há 2 meses</td>
-              <td>
-                <Status statusColor="green">Concluido</Status>
-              </td>
-            </tr>
-            <tr>
-              <td>Tarefa</td>
-              <td>20 min</td>
-              <td>Há 2 meses</td>
-              <td>
-                <Status statusColor="green">Concluido</Status>
-              </td>
-            </tr>
-            <tr>
-              <td>Tarefa</td>
-              <td>20 min</td>
-              <td>Há 2 meses</td>
-              <td>
-                <Status statusColor="green">Concluido</Status>
-              </td>
-            </tr>
-            <tr>
-              <td>Tarefa</td>
-              <td>20 min</td>
-              <td>Há 2 meses</td>
-              <td>
-                <Status statusColor="yellow">Concluido</Status>
-              </td>
-            </tr>
-            <tr>
-              <td>Tarefa</td>
-              <td>20 min</td>
-              <td>Há 2 meses</td>
-              <td>
-                <Status statusColor="red">Concluido</Status>
-              </td>
-            </tr>
+            {cycles.map(cycle => {
+              return (
+                <tr>
+                  <td>{cycle.task}</td>
+                  <td>{cycle.duration}</td>
+                  <td>{cycle.startedDate.toISOString()}</td>
+                  <td>
+                    {cycle.finishedDate && <Status statusColor="green">Concluido</Status>}
+                    {/* Se atentar, que a condição acima é um if => somente executa a segunda opção se a primeira === true */}
+                    {cycle.interruptDate && <Status statusColor="red">Interrompido</Status>}
+                    {(!cycle.finishedDate && !cycle.interruptDate) && <Status statusColor="yellow">Em andamento</Status>}
+                  </td>
+                </tr>
+              )
+            })}
           </tbody>
         </table>
       </HistoryList>

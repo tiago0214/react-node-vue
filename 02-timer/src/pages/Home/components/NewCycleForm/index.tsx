@@ -1,8 +1,8 @@
 import { DurationInput, FormContainer, TaskInput } from "./styles";
 
 import { useContext } from "react";
-import { CyclesContext } from "../../index";
 import { useFormContext } from "react-hook-form";
+import { CyclesContext } from "../../../../contexts/CyclesContexts";
  //não tem nenhuma validação mas, ele faz a integracão com as bibliotecas que faz as validações.
 
 export function NewCycleForm(){
