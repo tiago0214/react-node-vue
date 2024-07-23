@@ -24,7 +24,7 @@ export function History(){
           <tbody>
             {cycles.map(cycle => {
               return (
-                <tr>
+                <tr key={cycle.id}>
                   <td>{cycle.task}</td>
                   <td>{cycle.duration}</td>
                   <td>{formatDistanceToNow(cycle.startedDate,{
@@ -32,10 +32,10 @@ export function History(){
                     locale: ptBR,
                   })}</td>
                   <td>
-                    {cycle.finishedDate && <Status statusColor="green">Concluido</Status>}
+                    {cycle.finishedDate && <Status statuscolor="green">Concluido</Status>}
                     {/* Se atentar, que a condição acima é um if => somente executa a segunda opção se a primeira === true */}
-                    {cycle.interruptDate && <Status statusColor="red">Interrompido</Status>}
-                    {(!cycle.finishedDate && !cycle.interruptDate) && <Status statusColor="yellow">Em andamento</Status>}
+                    {cycle.interruptDate && <Status statuscolor="red">Interrompido</Status>}
+                    {(!cycle.finishedDate && !cycle.interruptDate) && <Status statuscolor="yellow">Em andamento</Status>}
                   </td>
                 </tr>
               )

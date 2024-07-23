@@ -61,7 +61,7 @@ export const HistoryList = styled.div`
 //com 1px de border, ou seja renderizando na tela 2px. com isso ele vai dar collapse na border do lado do meu elemento
 
 interface StatusProps {
-  statusColor: keyof typeof STATUS_COLORS
+  statuscolor: keyof typeof STATUS_COLORS
 }
 //com isso eu estou dizendo que os valores da minha propriedade, tem que server os tipos das propriedades do meu objeto
 
@@ -81,6 +81,6 @@ export const Status = styled.span<StatusProps>`
     width: 0.5rem;
     height: 0.5rem;
     border-radius: 50%;
-    background: ${props => props.theme[STATUS_COLORS[props.statusColor]]};
+    background: ${props => props.theme[STATUS_COLORS[props.statuscolor]]};
   }
 `;
