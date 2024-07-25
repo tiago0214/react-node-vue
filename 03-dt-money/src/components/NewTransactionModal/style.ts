@@ -96,4 +96,18 @@ export const TransactionTypeButton = styled(RadioGroup.Item)<TransactionTypeButt
   svg{
     color: ${props => props.variant === 'income' ? props.theme["green-300"] : props.theme["red-300"]}
   }
+
+  &[data-state="unchecked"]:hover{
+    background-color: ${props => props.theme["gray-600"]};
+  }
+
+  //o código ai de baixo, vai agir como uma condicional. quando o meu data attribute estiver com o valor checked => aplica o css
+  &[data-state="checked"]{
+    color: ${props => props.theme.white};
+    background-color: ${props => props.variant === "income" ? props.theme["green-500"] : props.theme["red-500"]};
+
+    svg{
+      color: ${props => props.theme.white};
+    }
+  }
 `
