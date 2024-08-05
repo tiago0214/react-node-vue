@@ -16,6 +16,9 @@ type NewTransactionFormInputs = z.infer<typeof newTransactionFormSchema>;
 
 export function NewTransactionModal(){
   const { control, register, handleSubmit, formState:{ isSubmitting} } = useForm<NewTransactionFormInputs>({
+    defaultValues: {
+      type: 'income'
+    },
     resolver: zodResolver(newTransactionFormSchema)
   })
 
@@ -59,8 +62,8 @@ export function NewTransactionModal(){
             <Controller 
               control={control}
               name= 'type'
-              render = {(props) => {
-                console.log(props.field.onChange);
+              render = {({field}) => {
+                
                 //field: onde esta os eventos, e é por lá que conseguimos alterar o valor desse campo.
                 //fieldState: tras informaçoes sobre o meu campo, nesse caso, do campo 'type'. Ex: algum erro nesse campo. 
                 //formState: retorna as informações sobre o contexto do formulário. Ex: isSubmitting
@@ -68,9 +71,12 @@ export function NewTransactionModal(){
                 //o onChange, é a função que vai salvar o valor dentro do formulário. ou seja, essa é a API que eu preciso.
                 //para anotar o valor do campo dentro do formulário.
                 //o value: é o valor atual desse campo.
-
+                  
+                //onValueChange: é uma props que é:event listner e é chamado toda vez que o valor é alterado. => é do radix
+                //field.onChange => função do hook form que envia o valor do campo para o handleSubmit
                 return(
-                  <TransactionType onValueChange={console.log}>
+                  <TransactionType onValueChange={field.onChange} value={field.value}>
+                    {/* value={field.value} => se eu quiser iniciar com um valor padrão */}
                     <TransactionTypeButton variant="income" value="income"> 
                       <ArrowCircleUp size={24}/>
                       Entrada
