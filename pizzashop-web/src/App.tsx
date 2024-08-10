@@ -3,8 +3,8 @@ import './global.css'
 
 export function App() {
   return (
-      <div className="flex justify-center items-center h-screen">
-        <Button>Botão</Button>
-      </div>
+    <div className="flex h-screen items-center justify-center">
+      <Button>Botão</Button>
+    </div>
   )
 }
