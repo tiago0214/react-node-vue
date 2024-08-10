@@ -60,10 +60,11 @@ export function TransactionProvider({children}: TransactionsProviderProps){
       setTransactions(state => [response.data,...state])
     }
   ,[]);
+  //useCallback => is a function that prevents a function to be recreated in memory every time the component re-renders.
 
   useEffect(()=>{
     fetchTransactions();
-  },[])
+  },[fetchTransactions])
   
   return(
     <TransactionContext.Provider value={{ 
