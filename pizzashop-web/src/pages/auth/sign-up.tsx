@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
@@ -24,15 +24,17 @@ export function SignUp() {
     formState: { isSubmitting },
   } = useForm<SignUpForm>({})
 
+  const navigate = useNavigate()
+
   async function handleSignUp(data: SignUpForm) {
     console.log(data)
 
     await new Promise((resolve) => setTimeout(resolve, 2000))
 
-    toast.success('Enviamos um link de autenticação para o seu email.', {
+    toast.success('Restaurante cadastrado com sucesso!', {
       action: {
-        label: 'Renviar',
-        onClick: () => handleSignUp(data),
+        label: 'Login',
+        onClick: () => navigate('/sign-in'),
       },
     })
   }
@@ -91,6 +93,17 @@ export function SignUp() {
             <Button className="w-full" type="submit" disabled={isSubmitting}>
               Finalizar cadastro
             </Button>
+
+            <p className="px-6 text-center text-sm leading-relaxed text-muted-foreground">
+              Ao continuar você concordar com os nossos{' '}
+              <a href="" className="underline underline-offset-4">
+                Termos de privacidade
+              </a>{' '}
+              e{' '}
+              <a className="underline underline-offset-4" href="">
+                Politicas de privacidade
+              </a>
+            </p>
           </form>
         </div>
       </div>
