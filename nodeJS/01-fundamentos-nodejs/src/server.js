@@ -1,37 +1,24 @@
 import http from 'node:http';
+import { json } from './middlewares/json.js';
+import { DataBase } from './database.js';
+import { routes } from './routes.js';
 
-const users = []
+const database = new DataBase();
 
 const server = http.createServer(async (req,res)=>{
-  console.log(req)
-
   const { method, url} = req;
 
-  const buff = [];
+  await json(req,res);
 
-  for await (const chunck of req){
-    buff.push(chunck)
+  const route = routes.find((route) => {
+    return route.method === method && route.path === url;
+  })
+
+  if(route){
+    return route.handler(req,res);
   }
 
-  console.log(buff.toString())
-
-  if(method === 'GET' && url === '/users'){
-    return res
-      .setHeader('Content-type', 'application/json')
-      .end(JSON.stringify(users))
-  }
-
-  if(method === 'POST' && url === '/users'){
-
-    users.push({
-      name: 'Titi',
-      age: 29
-    })
-
-    return res.writeHead(201).end()
-  }
-
-  return res.end('Hello word!')  
+  return res.writeHead(404).end()
 });
 
 server.listen(3333);
