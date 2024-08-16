@@ -8,14 +8,13 @@ class OneToAHundredStream extends Readable{
     setTimeout(() =>{
       const i = this.index++
       
-      if(i > 100){
+      if(i > 5){
         this.push(null)
       }else{
         const buff = Buffer.from(String(i))
 
         this.push(buff)
       }
-
 
     },1000)
   }

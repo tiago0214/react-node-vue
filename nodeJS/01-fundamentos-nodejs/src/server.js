@@ -2,13 +2,23 @@ import http from 'node:http';
 
 const users = []
 
-const server = http.createServer((req,res)=>{
+const server = http.createServer(async (req,res)=>{
+  console.log(req)
+
   const { method, url} = req;
+
+  const buff = [];
+
+  for await (const chunck of req){
+    buff.push(chunck)
+  }
+
+  console.log(buff.toString())
 
   if(method === 'GET' && url === '/users'){
     return res
-            .setHeader('Content-type', 'application/json')
-            .end(JSON.stringify(users))
+      .setHeader('Content-type', 'application/json')
+      .end(JSON.stringify(users))
   }
 
   if(method === 'POST' && url === '/users'){
@@ -18,7 +28,7 @@ const server = http.createServer((req,res)=>{
       age: 29
     })
 
-    return res.end('Cadastro de usuário')
+    return res.writeHead(201).end()
   }
 
   return res.end('Hello word!')  
