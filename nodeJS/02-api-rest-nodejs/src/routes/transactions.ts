@@ -5,6 +5,10 @@ import crypto from 'node:crypto'
 import { checkSessionIdExist } from '../middlewares/check-session-id-exist'
 
 export async function transactionsRoutes(app: FastifyInstance) {
+  // app.addHook('preHandler', async (request) => {
+  //   console.log(`[${request.method}] ${request.url}`)
+  // }) globa;l {context} handler -> I can use as middleware for all my app in server.ts
+
   app.get('/', { preHandler: [checkSessionIdExist] }, async (request) => {
     const { sessionId } = request.cookies
 
