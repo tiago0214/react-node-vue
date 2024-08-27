@@ -30,7 +30,7 @@ describe('transactions routes', () => {
     expect(response.statusCode).toEqual(201)
   })
 
-  it('It should be able to list all transactions', async () => {
+  it('It should be able to list all transactions that have been created', async () => {
     const createTransactionResponse = await request(app.server)
       .post('/transactions')
       .send({
@@ -52,5 +52,63 @@ describe('transactions routes', () => {
         amount: 1000,
       }),
     ])
+  })
+
+  it('It should be able to get an specific transaction after create one', async () => {
+    const createTransactionResponse = await request(app.server)
+      .post('/transactions')
+      .send({
+        title: 'new transaction',
+        amount: 2000,
+        type: 'credit',
+      })
+
+    const cookies = createTransactionResponse.get('Set-Cookie')
+
+    const listTransactionResponse = await request(app.server)
+      .get('/transactions')
+      .set('Cookie', cookies!)
+      .expect(200)
+
+    const transactionId = listTransactionResponse.body.transactions[0].id
+
+    const getTransactionResponse = await request(app.server)
+      .get(`/transactions/${transactionId}`)
+      .set('Cookie', cookies!)
+      .expect(200)
+
+    expect(getTransactionResponse.body.transaction).toEqual(
+      expect.objectContaining({
+        title: 'new transaction',
+        amount: 2000,
+      }),
+    )
+  })
+
+  it.only('It should be able to get the summary of a user', async () => {
+    const createTransactionResponse = await request(app.server)
+      .post('/transactions')
+      .send({
+        title: 'new transaction',
+        amount: 5000,
+        type: 'credit',
+      })
+
+    const cookies = createTransactionResponse.get('Set-Cookie')
+
+    await request(app.server)
+      .post('/transactions')
+      .set('Cookie', cookies!)
+      .send({
+        title: 'debit transaction',
+        amount: 1000,
+        type: 'debit',
+      })
+
+    const summaryResponse = await request(app.server)
+      .get('/transactions/summary')
+      .set('Cookie', cookies!)
+
+    expect(summaryResponse.body.summary.amount).toEqual(4000)
   })
 })
