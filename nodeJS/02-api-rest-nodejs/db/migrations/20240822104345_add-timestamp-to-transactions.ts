@@ -1,4 +1,4 @@
-import type { Knex } from 'knex'
+import { Knex } from 'knex'
 
 // table.timestamp('created_at').defaultTo(knex.fn.now).notNullable()
 
