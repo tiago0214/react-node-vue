@@ -2,7 +2,7 @@
 node_modules
 
 # database
-db/*.db
+src/db/*.db
 
 #environment variables
 .env

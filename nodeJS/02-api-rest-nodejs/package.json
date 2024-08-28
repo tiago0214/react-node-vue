@@ -8,7 +8,8 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "lint": "eslint src --ext .ts --fix",
-    "knex": "node --no-warnings --import  tsx ./node_modules/.bin/knex",
+    "knex": "node --no-warnings --loader  tsx ./node_modules/.bin/knex",
+    "migrate": "npx knex migrate:latest",
     "test": "vitest",
     "build": "tsup src --out-dir build"
   },
@@ -22,12 +23,12 @@
     "@types/supertest": "^6.0.2",
     "eslint": "^8.57.0",
     "supertest": "^7.0.0",
-    "tsup": "^8.2.4",
     "typescript": "^5.5.4",
     "vitest": "^2.0.5",
     "sqlite3": "^5.1.7"
   },
   "dependencies": {
+    "tsup": "^8.2.4",
     "tsx": "^4.17.0",
     "@fastify/cookie": "^9.4.0",
     "dotenv": "^16.4.5",
