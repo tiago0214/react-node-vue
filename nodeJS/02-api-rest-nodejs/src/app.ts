@@ -1,6 +1,8 @@
 import fastify from 'fastify'
 import cookie from '@fastify/cookie'
 import { transactionsRoutes } from './routes/transactions'
+import sqlite from 'sqlite3'
+console.log(sqlite)
 
 export const app = fastify()
 
