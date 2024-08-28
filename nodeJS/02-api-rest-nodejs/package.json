@@ -23,12 +23,12 @@
     "eslint": "^8.57.0",
     "supertest": "^7.0.0",
     "tsup": "^8.2.4",
-    "tsx": "^4.17.0",
     "typescript": "^5.5.4",
     "vitest": "^2.0.5",
     "sqlite3": "^5.1.7"
   },
   "dependencies": {
+    "tsx": "^4.17.0",
     "@fastify/cookie": "^9.4.0",
     "dotenv": "^16.4.5",
     "fastify": "^4.28.1",
