@@ -12,9 +12,9 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
   const { name, email, password } = registerSchemaBody.parse(request.body)
 
   try {
-    registerUseCase({ name, email, password })
+    await registerUseCase({ name, email, password })
   } catch (err) {
-    reply.status(409).send()
+    return reply.status(409).send()
   }
 
   reply.status(201).send()
