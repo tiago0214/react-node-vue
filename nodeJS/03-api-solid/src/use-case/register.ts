@@ -7,7 +7,7 @@ interface registerUseCaseParams {
   email: string
   password: string
 }
-
+// services
 export async function registerUseCase({
   name,
   email,
