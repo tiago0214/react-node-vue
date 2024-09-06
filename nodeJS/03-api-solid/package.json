@@ -2,13 +2,16 @@
   "name": "03-api-solid",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "engines": {
     "node": "18"
   },
   "scripts": {
     "start:dev": "tsx --watch ./src/server.ts",
     "build": "tsup ./src --out-dir build",
-    "start": "node build/server.js"
+    "start": "node build/server.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "keywords": [],
   "author": "",
@@ -22,7 +25,9 @@
     "prisma": "^5.19.0",
     "tsup": "^8.2.4",
     "tsx": "^4.19.0",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "vite-tsconfig-paths": "^5.0.1",
+    "vitest": "^2.0.5"
   },
   "dependencies": {
     "@prisma/client": "^5.19.0",
