@@ -1,6 +1,7 @@
 import { User, Prisma } from "@prisma/client";
 import { UserRepository } from "../user-repository";
 import { ResourceNotFoundError } from "@/use-case/errors/resource-not-found-error";
+import { randomUUID } from "node:crypto";
 
 export class InMemoryUserRepository implements UserRepository {
   public items: User[] = [];
@@ -27,7 +28,7 @@ export class InMemoryUserRepository implements UserRepository {
 
   async create(data: Prisma.UserCreateInput) {
     const user = {
-      id: "user-1",
+      id: randomUUID(),
       name: data.name,
       email: data.email,
       password_hash: data.password_hash,
