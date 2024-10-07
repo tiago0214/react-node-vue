@@ -23,8 +23,6 @@ describe("check in use case", () => {
       userId: "321",
     });
 
-    console.log(checkIn.created_at);
-
     expect(checkIn.id).toEqual(expect.any(String));
   });
 
@@ -42,5 +40,23 @@ describe("check in use case", () => {
         userId: "321",
       });
     }).rejects.toBeInstanceOf(Error);
+  });
+
+  it("should be able to check-in in different days", async () => {
+    vi.setSystemTime(new Date(2022, 0, 20, 8, 0, 0));
+
+    await sut.execute({
+      gymId: "123",
+      userId: "321",
+    });
+
+    vi.setSystemTime(new Date(2022, 0, 21, 8, 0, 0));
+
+    const { checkIn } = await sut.execute({
+      gymId: "123",
+      userId: "321",
+    });
+
+    expect(checkIn.id).toEqual(expect.any(String));
   });
 });
