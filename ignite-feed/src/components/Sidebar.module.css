@@ -58,3 +58,10 @@
   justify-content: center;
   align-items: center;
 }
+
+.sidebar footer a:hover{
+  background-color: var(--green-500);
+  color: var(--white);
+
+  transition: color .1s, background-color .1s;
+}
