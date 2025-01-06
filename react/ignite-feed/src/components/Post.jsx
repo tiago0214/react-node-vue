@@ -20,8 +20,20 @@ export function Post(){
         <p>Alo galera</p>
         <p>Tudo na santa paz</p>
         <p>Hi everyone</p>
-        <p><a href="#">Finishing</a></p>
+        <p>
+          <a href="#">#Finishing</a>{' '}
+          <a href="#">#Almost</a>{' '}
+          <a href="#">#there</a>{' '}
+        </p>
       </div>
+
+      <form className={styles.commentForm}>
+        <strong>Deixe seu feedback!</strong>
+
+        <textarea placeholder='Deixe um comentário'/>
+
+        <button type='submit'>Comentar</button>
+      </form>
     </article>
   )
 }
