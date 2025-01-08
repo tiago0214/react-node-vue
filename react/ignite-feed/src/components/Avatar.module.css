@@ -1,0 +1,7 @@
+.avatar{
+  width: calc(3rem + 12px);
+  height: calc(3rem + 12px);
+  border-radius: 8px;
+  border: solid 4px var(--gray-600);
+  outline: solid 2px var(--green-500);
+}
