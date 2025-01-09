@@ -1,8 +1,8 @@
 import styles from './Avatar.module.css'
 
-export function Avatar (props){
+// eslint-disable-next-line react/prop-types
+export function Avatar ({hasborder = true, src}){
   return (
-    // eslint-disable-next-line react/prop-types
-    <img className={styles.avatar} src={props.src} />
+    <img className={hasborder ? styles.avatar : styles.avatarWithoutBorder } src={src} />
   )
 }

@@ -5,3 +5,9 @@
   border: solid 4px var(--gray-600);
   outline: solid 2px var(--green-500);
 }
+
+.avatarWithoutBorder{
+  width: 3rem;
+  height: 3rem;
+  border-radius: 8px;
+}
