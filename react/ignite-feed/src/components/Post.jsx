@@ -1,23 +1,26 @@
+/* eslint-disable react/prop-types */
+import { ptBR } from 'date-fns/locale';
 
 import styles from './Post.module.css';
 import { Comment } from './Comment';
 import { Avatar } from './Avatar';
+import { format } from 'date-fns';
 
-export function Post(props){
-  console.log(props);
+export function Post({author,publishedAt}) {
+  const publishedAtDateFormatted = format(publishedAt, "dd 'de' LLLL 'às' HH:MM", { locale: ptBR });
 
   return (
     <article className={styles.post}>
       <header>
         <div className={styles.author}>
-          <Avatar src="https://github.com/tiago0214.png" />
+          <Avatar src={author.avatarUrl} />
           <div className={styles.authorInfo}>
-            <strong>Tiago Souza</strong>
-            <span>Web developer</span>
+            <strong>{author.name}</strong>
+            <span>{author.role}</span>
           </div>
         </div>
 
-        <time title="11 de maio 2020" dateTime="2020-05-11 08:30:00">Publicado há 1H</time>
+        <time title={publishedAtDateFormatted} dateTime="2020-05-11 08:30:00">{publishedAtDateFormatted}</time>
       </header>
 
       <div className={styles.content}>
