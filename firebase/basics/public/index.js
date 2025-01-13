@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc  } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 
 import { faker } from 'https://esm.sh/@faker-js/faker';
 
@@ -51,3 +51,19 @@ onAuthStateChanged(auth, (user) => {
 
 const createThing = document.getElementById('createThing');
 const thingsList = document.getElementById('thingsList');
+
+let thingsRef = collection(db,"things")
+let unsubscribe;
+
+onAuthStateChanged(auth, (user) => {
+  if(user){
+
+    createThing.onclick = async () => {
+      await addDoc(thingsRef, {
+        uid: user.uid,
+        name: faker.commerce.productName(),
+        weight: faker.number.int()
+      });
+    }
+  }
+})
