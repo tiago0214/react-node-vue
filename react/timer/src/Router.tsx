@@ -1,10 +1,10 @@
-import { Route, Routes } from "react-router";
-import { Home } from "./pages/Home";
-import { History } from "./pages/History";
-import { DefaultLayout } from "./layouts/DefaultLayout/index";
+import { Route, Routes } from 'react-router'
+import { Home } from './pages/Home'
+import { History } from './pages/History'
+import { DefaultLayout } from './layouts/DefaultLayout/index'
 
-export function Router(){
-  return(
+export function Router() {
+  return (
     <Routes>
       <Route path="/" element={<DefaultLayout />}>
         <Route path="/" element={<Home />} />
