@@ -1,19 +1,16 @@
 import { HandPalm, Play } from '@phosphor-icons/react'
 import {
-  CountdownContainer,
-  FormContainer,
   HomeContainer,
   InterruptCountdownButton,
-  MinutesAmountInput,
-  Separator,
   StartCountdownButton,
-  TaskInput,
 } from './styles'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useEffect, useState } from 'react'
 import { differenceInSeconds } from 'date-fns'
+import { NewCycleForm } from './components/NewCycleForm'
+import { Countdown } from './components/Countdown'
 
 const createNewTaskSchema = z.object({
   task: z.string().min(5),
@@ -138,44 +135,8 @@ export function Home() {
   return (
     <HomeContainer>
       <form onSubmit={handleSubmit(handleCreateNewCycle)}>
-        <FormContainer>
-          <label htmlFor="task">Vou trabalhar em</label>
-          <TaskInput
-            placeholder="Dê um nome para o seu projeto"
-            id="task"
-            list="task-suggestions"
-            {...register('task')}
-            disabled={!!activeCycle}
-          />
-
-          <datalist id="task-suggestions">
-            <option value="projeto 1" />
-            <option value="projeto 2" />
-            <option value="maçã" />
-          </datalist>
-
-          <label htmlFor="minutesAmount">durante</label>
-          <MinutesAmountInput
-            placeholder="00"
-            type="number"
-            id="minutesAmount"
-            step={5}
-            min={1}
-            max={60}
-            {...register('minutesAmount', { valueAsNumber: true })}
-            disabled={!!activeCycle}
-          />
-
-          <span>minutos.</span>
-        </FormContainer>
-
-        <CountdownContainer>
-          <span>{minutes[0]}</span>
-          <span>{minutes[1]}</span>
-          <Separator>:</Separator>
-          <span>{seconds[0]}</span>
-          <span>{seconds[1]}</span>
-        </CountdownContainer>
+        <NewCycleForm />
+        <Countdown />
 
         {activeCycle ? (
           <InterruptCountdownButton
