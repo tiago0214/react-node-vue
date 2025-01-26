@@ -33,6 +33,7 @@ interface CycleContextType {
   amountSecondsPassed: number
   markCurrentCycleAsFinished: () => void
   setSecondsPassed: (seconds: number) => void
+  returnCountdownToZero: () => void
 }
 
 export const CyclesContext = createContext({} as CycleContextType)
@@ -96,11 +97,16 @@ export function Home() {
       }),
     )
 
+    setSecondsPassed(0)
     setActiveCycleId(null)
   }
 
   function setSecondsPassed(seconds: number) {
     setAmountSecondsPassed(seconds)
+  }
+
+  function returnCountdownToZero() {
+    setActiveCycleId(null)
   }
 
   const task = watch('task')
@@ -116,6 +122,7 @@ export function Home() {
             markCurrentCycleAsFinished,
             setSecondsPassed,
             amountSecondsPassed,
+            returnCountdownToZero,
           }}
         >
           <FormProvider {...newCycleForm}>
