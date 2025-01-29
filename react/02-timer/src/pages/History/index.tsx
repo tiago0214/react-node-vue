@@ -6,8 +6,6 @@ import { ptBR } from 'date-fns/locale'
 
 export function History() {
   const { cycles } = useContext(CyclesContext)
-  // i don't have time to write some code today.
-  // I was working on history, but now I should use useReduce instead of useState
 
   return (
     <HistoryContainer>

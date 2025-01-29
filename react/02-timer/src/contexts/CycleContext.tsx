@@ -1,4 +1,5 @@
-import { createContext, ReactNode, useState } from 'react'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { createContext, ReactNode, useReducer, useState } from 'react'
 
 interface Cycle {
   id: string
@@ -21,7 +22,6 @@ interface CycleContextType {
   amountSecondsPassed: number
   markCurrentCycleAsFinished: () => void
   setSecondsPassed: (seconds: number) => void
-  returnCountdownToZero: () => void
   createNewCycle: (data: CreateNewCycleData) => void
   interruptActiveCycle: () => void
 }
@@ -32,23 +32,71 @@ interface CycleContextProviderProps {
   children: ReactNode
 }
 
+interface CycleState {
+  cycles: Cycle[]
+  activeCycleId: string | null
+}
+
 export function CycleContextProvider({ children }: CycleContextProviderProps) {
-  const [cycles, setCycles] = useState<Cycle[]>([])
-  const [activeCycleId, setActiveCycleId] = useState<string | null>(null)
+  const [cyclesState, dispatch] = useReducer(
+    (state: CycleState, action: any) => {
+      switch (action.type) {
+        case 'ADD_NEW_CYCLE':
+          return {
+            ...state,
+            cycles: [...state.cycles, action.payload.cycle],
+            activeCycleId: action.payload.cycle.id,
+          }
+        case 'INTERRUPT_CURRENT_CYCLE':
+          return {
+            ...state,
+            cycles: [
+              state.cycles.map((cycle) => {
+                if (cycle.id === state.activeCycleId) {
+                  return {
+                    ...cycle,
+                    interruptDate: new Date(),
+                  }
+                } else {
+                  return cycle
+                }
+              }),
+            ],
+            activeCycleId: null,
+          }
+        case 'MARK_CURRENT_CYCLE_AS_FINISHED':
+          return {
+            ...state,
+            cycles: [
+              state.cycles.map((cycle) => {
+                if (cycle.id === state.activeCycleId) {
+                  return {
+                    ...cycle,
+                    finishedAt: new Date(),
+                  }
+                } else {
+                  return cycle
+                }
+              }),
+            ],
+            activeCycleId: null,
+          }
+        default:
+          return state
+      }
+    },
+    { cycles: [], activeCycleId: null },
+  )
+
   const [amountSecondsPassed, setAmountSecondsPassed] = useState(0)
 
+  const { cycles, activeCycleId } = cyclesState
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
 
   function markCurrentCycleAsFinished() {
-    setCycles((state) => {
-      return state.map((cycle) => {
-        if (cycle.id === activeCycleId)
-          return {
-            ...cycle,
-            finishedAt: new Date(),
-          }
-        else return cycle
-      })
+    dispatch({
+      type: 'MARK_CURRENT_CYCLE_AS_FINISHED',
+      activeCycleId,
     })
   }
 
@@ -62,35 +110,25 @@ export function CycleContextProvider({ children }: CycleContextProviderProps) {
       startDate: new Date(),
     }
 
-    setCycles((state) => [...state, cycle])
-    setActiveCycleId(id)
+    dispatch({
+      type: 'ADD_NEW_CYCLE',
+      payload: { cycle },
+    })
+
+    setAmountSecondsPassed(0)
   }
 
   function interruptActiveCycle() {
-    setCycles(
-      cycles.map((cycle) => {
-        if (cycle.id === activeCycleId) {
-          return {
-            ...cycle,
-            interruptDate: new Date(),
-          }
-        } else {
-          return cycle
-        }
-      }),
-    )
-
-    setSecondsPassed(0)
-    setActiveCycleId(null)
+    dispatch({
+      type: 'INTERRUPT_CURRENT_CYCLE',
+      activeCycleId,
+    })
   }
 
   function setSecondsPassed(seconds: number) {
     setAmountSecondsPassed(seconds)
   }
 
-  function returnCountdownToZero() {
-    setActiveCycleId(null)
-  }
   return (
     <CyclesContext.Provider
       value={{
@@ -100,7 +138,6 @@ export function CycleContextProvider({ children }: CycleContextProviderProps) {
         markCurrentCycleAsFinished,
         setSecondsPassed,
         amountSecondsPassed,
-        returnCountdownToZero,
         interruptActiveCycle,
         createNewCycle,
       }}
