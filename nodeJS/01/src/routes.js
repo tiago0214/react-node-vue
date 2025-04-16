@@ -29,10 +29,25 @@ export const routes = [{
       return res.writeHead(201).end()
     }
   },{
-    method: 'DELETE',
-    path: buildRoutePath('/users/:id/group/:groudId'),
+    method: 'PUT',
+    path: buildRoutePath('/users/:id'),
     handle: (req,res) =>{
-      return res.end()
+      const { id } = req.params
+      const { name, email } = req.body
+
+      dataBase.update('users', id,{ name, email })
+
+      return res.writeHead(204).end()
+    }
+  },{
+    method: 'DELETE',
+    path: buildRoutePath('/users/:id'),
+    handle: (req,res) =>{
+      const { id } = req.params
+
+      dataBase.delete('users', id)
+
+      return res.writeHead(204).end()
     }
   }
 ]

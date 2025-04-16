@@ -34,4 +34,24 @@ export class Database {
 
     return data
   }
+
+  update(table,id,data){
+    const indexOfUser = this.#database[table].findIndex(user => user.id === id)
+
+    if(indexOfUser > -1){
+      this.#database[table][indexOfUser] = {id, ...data}
+
+      this.#persist()
+    }
+  }
+
+  delete( table, id){
+    const indexOfUser = this.#database[table].findIndex(user => user.id === id)
+
+    if(indexOfUser > -1){
+      this.#database[table].splice(indexOfUser,1)
+
+      this.#persist()
+    }
+  }
 }
