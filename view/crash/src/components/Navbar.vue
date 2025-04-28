@@ -7,7 +7,6 @@ const isActiveLink = (routePath) =>{
 
   return route.path === routePath
 }
-
 </script>
 
 <template>
