@@ -1,0 +1,4 @@
+Eu acredito que a diferença é que o v-model, eu estou querendo recuperar aqueles dados de alguma maneira, 
+um campo de formulário por exemplo
+No v-bind, geralmente é quando eu quero passar dados JS para algum component ou mesmo, colocar o dado
+tipo no :href="valor da variável"
