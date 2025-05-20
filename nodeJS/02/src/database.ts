@@ -1,8 +1,4 @@
 import { knex as knexSetup } from 'knex'
+import config from '../knexfile'
 
-export const knex = knexSetup({
-  client: 'sqlite3',
-  connection: {
-    filename: './tmp/database.db',
-  },
-})
+export const knex = knexSetup(config.development)
