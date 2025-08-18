@@ -1,4 +1,12 @@
+# Dependecies
 node_modules
-src/db/database.db
+
+# Database
+src/db/*.db
+
+# Enviromnet
 .env
 .env.test
+
+# Build
+build
